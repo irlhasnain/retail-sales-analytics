@@ -32,3 +32,23 @@ def top_product(limit=10):
     result = pd.read_sql_query(query, conn)
     conn.close()
     return result
+
+def customer_segmentation():
+    """RFM Analysis - Recency, Frequency, Monetary"""
+    conn = get_db_connection()
+    query = """
+    SELECT
+        c.customer_id,
+        c.customer_name,
+        MAX(o.order_date) AS last_order_date,
+        COUNT(DISTINCT o.order_id) AS frequency,
+        ROUND(SUM(o.total_amount), 2) AS monetary
+    FROM customers c
+    JOIN orders o ON c.customer_id = o.customer_id
+    JOIN order_items oi ON o.order_id = oi.order_id
+    GROUP BY c.customer_id
+    ORDER BY monetary DESC;
+    """
+    result = pd.read_sql_query(query, conn)
+    conn.close()
+    return result
