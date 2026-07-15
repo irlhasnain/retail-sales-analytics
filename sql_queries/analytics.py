@@ -1,4 +1,4 @@
-from database.db_connect import get_db_connection
+from database.db_connect import get_connection
 import pandas as pd 
 
 def monthly_revenue():
