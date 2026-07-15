@@ -5,9 +5,10 @@ def monthly_revenue():
     conn = get_connection()
     query = """
     SELECT
-        STRFTIME('%Y-%m', order_date) AS month,
-        ROUND(SUM(total_amount), 2) AS total_revenue
-    FROM orders
+        STRFTIME('%Y-%m', o.order_date) AS month,
+        ROUND(SUM(oi.sales), 2) AS total_revenue
+    FROM orders o
+    JOIN order_items oi ON o.order_id = oi.order_id
     GROUP BY month
     ORDER BY month;
     """
