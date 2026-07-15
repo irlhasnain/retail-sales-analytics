@@ -2,7 +2,7 @@ from database.db_connect import get_connection
 import pandas as pd 
 
 def monthly_revenue():
-    conn = get_db_connection()
+    conn = get_connection()
     query = """
     SELECT
         STRFTIME('%Y-%m', order_date) AS month,
@@ -16,7 +16,7 @@ def monthly_revenue():
     return result
 
 def top_product(limit=10):
-    conn = get_db_connection()
+    conn = get_connection()
     query = f"""
     SELECT
         p.product_name,
@@ -35,7 +35,7 @@ def top_product(limit=10):
 
 def customer_segmentation():
     """RFM Analysis - Recency, Frequency, Monetary"""
-    conn = get_db_connection()
+    conn = get_connection()
     query = """
     SELECT
         c.customer_id,
