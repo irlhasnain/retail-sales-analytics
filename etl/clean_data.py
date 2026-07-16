@@ -12,14 +12,14 @@ def clean_data(input_path, output_path):
     df = pd.read_csv(input_path, encoding='latin-1')  # Specify encoding to handle special characters
 
     # Perform data cleaning operations
-    df = df.dropna(inplace=True)  # Remove rows with missing values
-    df = df.drop_duplicates(inplace=True)  # Remove duplicate rows
+    df = df.dropna()  # Remove rows with missing values
+    df = df.drop_duplicates()  # Remove duplicate rows
+
+    df.columns = [c.strip().lower().replace(' ', '_').replace('-', '_') for c in df.columns]  # Strip whitespace from column names and replace spaces with underscores
 
     df['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')  # Convert order_date to datetime
     df['ship_date'] = pd.to_datetime(df['ship_date'], errors='coerce')  # Convert ship_date to datetime
 
-
-    df.columns=[c.strip().lower().replace(' ', '_') for c in df.columns]  # Strip whitespace from column names and replace spaces with underscores
 
     df=df.dropna(subset=['customer_name', 'product_name'])  # Drop rows where customer_name or product_name is null
 
@@ -28,5 +28,5 @@ def clean_data(input_path, output_path):
     print(f"Cleaned data saved to {df.shape}")
     return df
 
-    if __name__ == "__main__":
-        clean_data("D:/retail-sales-analytics/data/raw/Sample - Superstore.csv", "data/cleaned_data.csv")
+if __name__ == "__main__":
+    clean_data("D:/retail-sales-analytics/data/raw/Sample - Superstore.csv", "data/processed/cleaned_data.csv")
