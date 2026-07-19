@@ -32,4 +32,10 @@ st.subheader("🏆 Top 10 Products")
 products_df = top_product(limit=10)
 st.bar_chart(producsts_df.set_index('product_name')['total_sales'])
 
+st.sidebar.header("Filters")
 
+conn = get_connection()
+regions = pd.read_sql_query("SELECT DISTINCT region FROM customers",conn)['region']
+conn.close()
+
+selected_region = st.sidebar.selectbox("Select Region",["All"]+regions)
