@@ -24,3 +24,6 @@ col1.metric("Total Revenue",f"${total_revenue:,.0f}")
 col2.metric("Total_order",f"${total_order:,.0f}")
 col3.metric("Total Customer",f"${total_customer:,.0f}")
 
+st.subheader("📈 Monthly Revenue Trends")
+revenue_df = monthly_revenue()
+st.line_chart(revenue_df.set_index('month')['total_revenue'])
