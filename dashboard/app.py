@@ -30,12 +30,38 @@ st.line_chart(revenue_df.set_index('month')['total_revenue'])
 
 st.subheader("🏆 Top 10 Products")
 products_df = top_product(limit=10)
-st.bar_chart(producsts_df.set_index('product_name')['total_sales'])
+st.bar_chart(products_df.set_index('product_name')['total_sales'])
 
 st.sidebar.header("Filters")
 
 conn = get_connection()
-regions = pd.read_sql_query("SELECT DISTINCT region FROM customers",conn)['region']
+regions = pd.read_sql_query("SELECT DISTINCT region FROM customers",conn)['region'].tolist()
 conn.close()
 
 selected_region = st.sidebar.selectbox("Select Region",["All"]+regions)
+
+conn = get_connection()
+
+if selected_region == "All":
+    query = """
+    SELECT p.category, SUM(oi.sales) as Total_sales
+    FROM order_items oi
+    JOIN products p ON oi.product_id = p.product_id
+    GROUP BY p.category
+    """
+else:
+    query = f"""
+    SELECT p.category, SUM(oi.sales) as Total_sales
+    FROM order_items oi
+    JOIN products p ON oi.product_id = p.product_id
+    JOIN orders o ON oi.order_id = o.order_id
+    JOIN customers c ON o.customer_id = c.customer_id
+    WHERE c.region = '{selected_region}'
+    GROUP BY p.category
+    """
+
+category_df = pd.read_sql_query(query, conn)
+conn.close()
+
+st.subheader(f"📦 Category Sales - {selected_region}")
+st.bar_chart(category_df.set_index('category')['total_sales'])
