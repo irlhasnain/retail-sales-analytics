@@ -26,7 +26,25 @@ col3.metric("Total Customer",f"${total_customer:,.0f}")
 
 st.subheader("📈 Monthly Revenue Trends")
 revenue_df = monthly_revenue()
-st.line_chart(revenue_df.set_index('month')['total_revenue'])
+revenue_df['month'] = pd.to_datetime(revenue_df['month'])
+
+min_date = revenue_df['month'].min().to_pydatetime()
+max_date = revenue_df['month'].max().to_pydatetime()
+
+date_range = st.slider(
+    "Select Date Range",
+    min_value=min_date,
+    max_value=max_date,
+    value=(min_date, max_date),
+    format="YYYY-MM"
+)
+
+# Filter karo selected range ke hisab se
+filtered_revenue = revenue_df[
+    (revenue_df['month'] >= date_range[0]) & (revenue_df['month'] <= date_range[1])
+]
+
+st.line_chart(filtered_revenue.set_index('month')['total_revenue'])
 
 st.subheader("🏆 Top 10 Products")
 products_df = top_product(limit=10)
@@ -44,14 +62,14 @@ conn = get_connection()
 
 if selected_region == "All":
     query = """
-    SELECT p.category, SUM(oi.sales) as Total_sales
+    SELECT p.category, SUM(oi.sales) as total_sales
     FROM order_items oi
     JOIN products p ON oi.product_id = p.product_id
     GROUP BY p.category
     """
 else:
     query = f"""
-    SELECT p.category, SUM(oi.sales) as Total_sales
+    SELECT p.category, SUM(oi.sales) as total_sales
     FROM order_items oi
     JOIN products p ON oi.product_id = p.product_id
     JOIN orders o ON oi.order_id = o.order_id
@@ -71,7 +89,7 @@ import pickle
 st.subheader("Revenue Forecast")
 
 with open('models/forecast_model.pkl','rb') as f:
-    model = pickle_load(f)
+    model = pickle.load(f)
 
 future = model.make_future_dataframe(periods = 6, freq = "ME")
 forecast = model.predict(future)
