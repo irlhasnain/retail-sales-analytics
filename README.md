@@ -62,7 +62,10 @@ streamlit run dashboard/app.py
 
 ## 📊 Dashboard Preview
 
-*(Screenshot yahan add karenge)*
+![Dashboard Screenshot 1](assets/img1.png)
+![Dashboard Screenshot 2](assets/img2.png)
+![Dashboard Screenshot 3](assets/img3.png)
+![Dashboard Screenshot 4](assets/img4.png)
 
 ## 🔗 Live Demo
 
