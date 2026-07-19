@@ -27,3 +27,9 @@ col3.metric("Total Customer",f"${total_customer:,.0f}")
 st.subheader("📈 Monthly Revenue Trends")
 revenue_df = monthly_revenue()
 st.line_chart(revenue_df.set_index('month')['total_revenue'])
+
+st.subheader("🏆 Top 10 Products")
+products_df = top_product(limit=10)
+st.bar_chart(producsts_df.set_index('product_name')['total_sales'])
+
+
