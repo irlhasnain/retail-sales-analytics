@@ -71,7 +71,7 @@ streamlit run dashboard/app.py
 
 ## 🔗 Live Demo
 
-*(Deploy hone ke baad link yahan aayega)*
+https://retail-sales-analytics-dashboards.streamlit.app/
 
 ## 📝 License
 
