@@ -13,6 +13,7 @@ This project demonstrates a complete data science workflow:
 
 ## 🏗️ Architecture
 ## 📁 Project Structure
+```
 retail-sales-analytics/
 ├── data/                  # Raw and processed datasets
 ├── database/              # DB connection and schema
@@ -22,6 +23,7 @@ retail-sales-analytics/
 ├── models/                # Saved forecasting model
 ├── dashboard/             # Streamlit dashboard app
 └── requirements.txt
+```
 ## 🔧 Tech Stack
 
 - **Language**: Python
