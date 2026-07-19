@@ -65,3 +65,15 @@ conn.close()
 
 st.subheader(f"📦 Category Sales - {selected_region}")
 st.bar_chart(category_df.set_index('category')['total_sales'])
+
+import pickle
+
+st.subheader("Revenue Forecast")
+
+with open('models/forecast_model.pkl','rb') as f:
+    model = pickle_load(f)
+
+future = model.make_future_dataframe(periods = 6, freq = "ME")
+forecast = model.predict(future)
+
+st.line_chart(forecast.set_index('ds')[['yhat']])
